@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Ultimate Canvas Bench Pro</title>
+    <title>Ultimate Canvas Bench Pro - Extreme Edition</title>
     <style>
         body { 
             margin: 0; 
@@ -32,39 +32,41 @@
         }
 
         .panel {
-            background: rgba(10, 10, 20, 0.9); 
+            background: rgba(10, 10, 20, 0.95); 
             backdrop-filter: blur(12px);
-            padding: 15px; 
-            border-radius: 14px; 
-            border: 1px solid rgba(0, 255, 204, 0.2);
+            padding: 20px; 
+            border-radius: 16px; 
+            border: 1px solid rgba(0, 255, 204, 0.3);
             pointer-events: auto; 
             width: 100%; 
-            max-width: 320px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            max-width: 400px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            max-height: 95vh;
+            overflow-y: auto;
         }
 
         .stats { 
-            border-bottom: 1px solid rgba(0, 255, 204, 0.3); 
-            margin-bottom: 15px; 
-            padding-bottom: 10px; 
+            border-bottom: 1px solid rgba(0, 255, 204, 0.4); 
+            margin-bottom: 20px; 
+            padding-bottom: 15px; 
         }
         #fps { 
-            font-size: 42px; 
+            font-size: 48px; 
             font-weight: 900; 
             color: #00ffcc; 
             display: block; 
-            text-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
+            text-shadow: 0 0 15px rgba(0, 255, 204, 0.7);
         }
         
         .control-group { 
-            margin-bottom: 15px; 
+            margin-bottom: 18px; 
         }
         label { 
             display: block; 
-            font-size: 11px; 
+            font-size: 12px; 
             text-transform: uppercase; 
             color: #aaa; 
-            margin-bottom: 5px; 
+            margin-bottom: 8px; 
             letter-spacing: 0.5px;
         }
         
@@ -76,13 +78,63 @@
             border-radius: 5px;
         }
         
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+            padding: 15px;
+            background: rgba(20, 20, 30, 0.7);
+            border-radius: 10px;
+        }
+        
+        .checkbox-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+        
+        .checkbox-row input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #00ffcc;
+            cursor: pointer;
+        }
+        
+        .checkbox-label {
+            font-size: 12px;
+            color: #ccc;
+            cursor: pointer;
+            flex-grow: 1;
+        }
+        
+        .optimization-active {
+            color: #00ffcc !important;
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(0, 255, 204, 0.5);
+        }
+        
+        .optimization-super-optimized {
+            color: #00ffcc !important;
+            font-weight: bold;
+            text-shadow: 0 0 8px rgba(0, 255, 204, 0.7);
+        }
+        
+        .optimization-super-unoptimized {
+            color: #ff5555 !important;
+            font-weight: bold;
+            text-shadow: 0 0 8px rgba(255, 85, 85, 0.7);
+        }
+        
         .btn-grid { 
             display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            gap: 10px; 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 12px; 
             pointer-events: auto; 
-            margin-top: 15px;
+            margin-top: 20px;
         }
+        
         button { 
             padding: 15px; 
             border-radius: 10px; 
@@ -95,32 +147,118 @@
             transition: all 0.2s;
             font-size: 13px;
         }
+        
         button:hover { 
             background: linear-gradient(to bottom, #3a3a4a, #2a2a3a);
             transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
+        
         button:active { 
             transform: translateY(0);
             background: linear-gradient(to bottom, #1a1a2a, #0a0a1a);
         }
         
+        .danger {
+            background: linear-gradient(to bottom, #ff5555, #cc4444);
+            border-color: rgba(255, 85, 85, 0.5);
+        }
+        
+        .danger:hover {
+            background: linear-gradient(to bottom, #ff6666, #dd5555);
+        }
+        
+        .extreme {
+            background: linear-gradient(to bottom, #ff00ff, #cc00cc);
+            border-color: rgba(255, 0, 255, 0.5);
+        }
+        
+        .extreme:hover {
+            background: linear-gradient(to bottom, #ff22ff, #dd00dd);
+        }
+        
         #res-info {
-            font-size: 12px;
-            color: #888;
+            font-size: 13px;
+            color: #aaa;
             display: block;
-            margin-top: 5px;
+            margin-top: 8px;
         }
         
         #performance-info {
-            font-size: 11px;
-            color: #888;
-            margin-top: 15px;
+            font-size: 12px;
+            color: #aaa;
+            margin-top: 20px;
             border-top: 1px solid #333;
-            padding-top: 10px;
+            padding-top: 15px;
         }
         
-        .danger {
-            color: #ff5555 !important;
+        .limits-info {
+            font-size: 11px;
+            color: #666;
+            margin-top: 4px;
+            display: block;
+        }
+        
+        .section-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #00ffcc;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid rgba(0, 255, 204, 0.3);
+            padding-bottom: 5px;
+        }
+        
+        .toggle-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #222;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .toggle-slider {
+            background-color: #00ffcc;
+        }
+        
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
         }
     </style>
 </head>
@@ -132,62 +270,133 @@
     <div class="panel">
         <div class="stats">
             <span id="fps">60 FPS</span>
-            <small id="res-info">Resolução: 100% • Objetos: 0</small>
+            <small id="res-info">Resolução: 100% • Objetos: 0 • Partículas: 0</small>
         </div>
 
         <div class="control-group">
             <label>Quantidade de Objetos: <span id="v-count">500</span></label>
-            <input type="range" id="input-count" min="1" max="10000" value="500">
+            <input type="range" id="input-count" min="1" max="50000" value="500">
+            <small class="limits-info">Limite: 1 - 50,000</small>
         </div>
 
         <div class="control-group">
             <label>Complexidade: <span id="v-teeth">8</span></label>
-            <input type="range" id="input-teeth" min="3" max="100" value="8">
+            <input type="range" id="input-teeth" min="3" max="500" value="8">
+            <small class="limits-info">Limite: 3 - 500</small>
         </div>
 
         <div class="control-group">
             <label>Resolução: <span id="v-res">1.0</span>x</label>
-            <input type="range" id="input-res" min="0.1" max="4.0" step="0.1" value="1.0">
+            <input type="range" id="input-res" min="0.1" max="16.0" step="0.1" value="1.0">
+            <small class="limits-info">Limite: 0.1x - 16.0x</small>
         </div>
 
         <div class="control-group">
             <label>Carga CPU (Primária): <span id="v-cpu">0</span></label>
-            <input type="range" id="input-cpu" min="0" max="5000" value="0">
+            <input type="range" id="input-cpu" min="0" max="50000" value="0">
+            <small class="limits-info">Limite: 0 - 50,000</small>
         </div>
         
         <div class="control-group">
             <label>Carga CPU (Secundária): <span id="v-cpu2">0</span></label>
-            <input type="range" id="input-cpu2" min="0" max="10000" value="0">
+            <input type="range" id="input-cpu2" min="0" max="100000" value="0">
+            <small class="limits-info">Limite: 0 - 100,000</small>
         </div>
         
         <div class="control-group">
             <label>Sistema de Partículas: <span id="v-particles">0</span></label>
-            <input type="range" id="input-particles" min="0" max="5000" value="0">
+            <input type="range" id="input-particles" min="0" max="50000" value="0">
+            <small class="limits-info">Limite: 0 - 50,000</small>
         </div>
         
         <div class="control-group">
             <label>Tipo de Forma: <span id="v-shape">Engrenagem</span></label>
-            <select id="input-shape" style="width:100%; padding:8px; border-radius:6px; background:#222; color:#eee; border:1px solid #444;">
+            <select id="input-shape" style="width:100%; padding:10px; border-radius:8px; background:#222; color:#eee; border:1px solid #444;">
                 <option value="gear">Engrenagem</option>
                 <option value="star">Estrela Complexa</option>
                 <option value="spiral">Espiral</option>
                 <option value="polygon">Polígono Irregular</option>
                 <option value="curve">Curva Bézier</option>
+                <option value="fractal">Fractal</option>
+                <option value="metaball">Metaballs</option>
+                <option value="noise">Ruído Perlin</option>
                 <option value="mixed">Misto (Todos)</option>
+                <option value="extreme">Modo Extremo</option>
             </select>
+        </div>
+        
+        <div class="section-title">Modo de Otimização:</div>
+        <div class="checkbox-group">
+            <div class="checkbox-row">
+                <input type="checkbox" id="super-optimized-checkbox">
+                <span class="checkbox-label" id="super-optimized-label">Super Otimizado</span>
+            </div>
+            <div class="checkbox-row">
+                <input type="checkbox" id="optimized-checkbox" checked>
+                <span class="checkbox-label optimization-active" id="optimized-label">Otimizado</span>
+            </div>
+            <div class="checkbox-row">
+                <input type="checkbox" id="normal-checkbox">
+                <span class="checkbox-label" id="normal-label">Normal</span>
+            </div>
+            <div class="checkbox-row">
+                <input type="checkbox" id="unoptimized-checkbox">
+                <span class="checkbox-label" id="unoptimized-label">Não Otimizado</span>
+            </div>
+            <div class="checkbox-row">
+                <input type="checkbox" id="super-unoptimized-checkbox">
+                <span class="checkbox-label" id="super-unoptimized-label">Super Não Otimizado</span>
+            </div>
+        </div>
+
+        <div class="section-title">Características Extras:</div>
+        <div class="toggle-group">
+            <span class="checkbox-label">Física Realista</span>
+            <label class="toggle-switch">
+                <input type="checkbox" id="physics-toggle">
+                <span class="toggle-slider"></span>
+            </label>
+        </div>
+        
+        <div class="toggle-group">
+            <span class="checkbox-label">Colisões Detalhadas</span>
+            <label class="toggle-switch">
+                <input type="checkbox" id="collisions-toggle">
+                <span class="toggle-slider"></span>
+            </label>
+        </div>
+        
+        <div class="toggle-group">
+            <span class="checkbox-label">Efeitos de Luz</span>
+            <label class="toggle-switch">
+                <input type="checkbox" id="lighting-toggle">
+                <span class="toggle-slider"></span>
+            </label>
+        </div>
+        
+        <div class="toggle-group">
+            <span class="checkbox-label">Pós-Processamento</span>
+            <label class="toggle-switch">
+                <input type="checkbox" id="postprocessing-toggle">
+                <span class="toggle-slider"></span>
+            </label>
         </div>
 
         <div id="performance-info">
             <span id="draw-calls">Desenhos/quadro: 0</span><br>
-            <span id="cpu-time">Tempo CPU: 0ms</span>
+            <span id="cpu-time">Tempo CPU: 0ms</span><br>
+            <span id="gpu-time">Tempo GPU: -</span><br>
+            <span id="memory-usage">Memória: - MB</span>
         </div>
 
         <div class="btn-grid">
-            <button onclick="changeGears(-500)">-500 Objetos</button>
-            <button onclick="changeGears(500)">+500 Objetos</button>
+            <button onclick="changeGears(-500)">-500 Obj</button>
+            <button onclick="changeGears(500)">+500 Obj</button>
             <button onclick="toggleShadows()" id="shadow-btn">Sombra: ON</button>
             <button onclick="toggleBlur()" id="blur-btn">Blur: OFF</button>
+            <button onclick="togglePhysics()" id="physics-btn">Física: OFF</button>
             <button onclick="stressTest()" class="danger">STRESS TEST</button>
+            <button onclick="extremeTest()" class="extreme">EXTREME TEST</button>
             <button onclick="resetTest()">RESETAR</button>
         </div>
     </div>
@@ -195,7 +404,7 @@
 
 <script>
     const canvas = document.getElementById('stage');
-    const ctx = canvas.getContext('2d', { alpha: false, desynchronized: true });
+    const ctx = canvas.getContext('2d', { alpha: false, desynchronized: true, powerPreference: "high-performance" });
     
     let width, height;
     let gears = [];
@@ -206,22 +415,53 @@
         res: 1.0,
         cpuLoad: 0,
         cpuLoad2: 0,
+        cpuLoad3: 0,
         particleCount: 0,
         shapeType: 'gear',
         shadows: true,
         blur: false,
-        drawCalls: 0
+        physics: false,
+        collisions: false,
+        lighting: false,
+        postprocessing: false,
+        drawCalls: 0,
+        optimizationMode: 'optimized',
+        useOffscreenCanvas: false,
+        batchDrawCalls: true,
+        useLowQuality: false,
+        maxGears: 50000,
+        maxParticles: 50000,
+        maxTeeth: 500,
+        maxRes: 16.0,
+        useWebWorkers: false,
+        useGPUAcceleration: true
     };
 
     // Performance tracking
     let lastTime = 0, frameCount = 0, fps = 0, lastFpsUpdate = 0;
     let lastCpuTime = 0, totalCpuTime = 0, cpuMeasurements = 0;
+    let frameTimes = [];
+    let gpuTime = 0;
+    let memoryUsage = 0;
+    
+    // Extra features
+    let physicsObjects = [];
+    let collisionGrid = [];
+    let lightSources = [];
+    let postProcessingBuffer = null;
+    let postProcessingCtx = null;
+    
+    // Web Workers for extreme CPU stress
+    let cpuWorker = null;
+    let isWorkerRunning = false;
 
     // Complex mathematical functions for CPU stress
     function heavyMath1(iterations) {
         let result = 0;
         for(let i = 0; i < iterations; i++) {
             result += Math.sin(i) * Math.cos(i) * Math.tan(i % 180 * Math.PI / 180);
+            // Extra computation
+            result += Math.sqrt(Math.abs(Math.sin(result))) * Math.log(Math.abs(i) + 1);
         }
         return result;
     }
@@ -230,12 +470,15 @@
         let result = 0;
         for(let i = 0; i < iterations; i++) {
             // Complex fractal calculation simulation
-            let x = 0, y = 0;
-            for(let j = 0; j < 10; j++) {
-                const xtemp = x * x - y * y + (i % 100) / 100;
-                y = 2 * x * y + (j % 100) / 100;
+            let x = 0, y = 0, z = 0;
+            for(let j = 0; j < 20; j++) {
+                const xtemp = x * x - y * y - z * z + (i % 100) / 100;
+                const ytemp = 2 * x * y + (j % 100) / 100;
+                const ztemp = 2 * x * z + ((i + j) % 100) / 100;
                 x = xtemp;
-                result += Math.sqrt(x*x + y*y);
+                y = ytemp;
+                z = ztemp;
+                result += Math.sqrt(x*x + y*y + z*z);
             }
         }
         return result;
@@ -244,10 +487,62 @@
     function heavyMath3(iterations) {
         let result = 0;
         for(let i = 0; i < iterations; i++) {
-            // Matrix multiplication simulation
-            for(let j = 0; j < 5; j++) {
-                for(let k = 0; k < 5; k++) {
+            // Matrix multiplication simulation (10x10)
+            for(let j = 0; j < 10; j++) {
+                for(let k = 0; k < 10; k++) {
                     result += Math.sin(i*j) * Math.cos(j*k) * Math.tan(k*i);
+                    // Extra complex operations
+                    result += Math.pow(Math.abs(Math.sin(result)), 2) * Math.atan2(k, j);
+                }
+            }
+        }
+        return result;
+    }
+    
+    function heavyMath4(iterations) {
+        // Extreme math for super unoptimized mode
+        let result = 0;
+        for(let i = 0; i < iterations; i++) {
+            // Simulate fluid dynamics calculation
+            for(let j = 0; j < 5; j++) {
+                // Navier-Stokes like simulation
+                const u = Math.sin(i) * Math.cos(j);
+                const v = Math.cos(i) * Math.sin(j);
+                const p = Math.sin(i + j);
+                
+                // Continuity equation
+                const du_dx = Math.cos(i) * Math.cos(j);
+                const dv_dy = -Math.cos(i) * Math.sin(j);
+                result += Math.abs(du_dx + dv_dy);
+                
+                // Momentum equations
+                for(let k = 0; k < 3; k++) {
+                    const re = 1000; // Reynolds number
+                    result += Math.sqrt(u*u + v*v) * re * p;
+                }
+            }
+        }
+        return result;
+    }
+    
+    function heavyMath5(iterations) {
+        // Quantum physics simulation (fake)
+        let result = 0;
+        for(let i = 0; i < iterations; i++) {
+            // Schrödinger equation simulation
+            const psi = Math.exp(-i/100) * Math.cos(i/10);
+            const hamiltonian = Math.sin(i/50) * Math.cos(i/20);
+            const energy = Math.sqrt(Math.abs(psi * hamiltonian));
+            
+            // Wave function collapse simulation
+            for(let j = 0; j < 5; j++) {
+                const probability = Math.abs(psi) * Math.abs(psi);
+                result += probability * energy * Math.random();
+                
+                // Quantum entanglement simulation
+                for(let k = 0; k < 3; k++) {
+                    const entangled = Math.sin(i*j*k) * Math.cos(j*i*k);
+                    result += Math.abs(entangled) * probability;
                 }
             }
         }
@@ -258,45 +553,126 @@
         constructor(x, y) {
             this.x = x || Math.random() * width;
             this.y = y || Math.random() * height;
-            this.vx = (Math.random() - 0.5) * 4;
-            this.vy = (Math.random() - 0.5) * 4;
-            this.radius = Math.random() * 3 + 1;
-            this.color = `hsla(${Math.random() * 360}, 100%, 70%, ${Math.random() * 0.5 + 0.2})`;
-            this.life = Math.random() * 100 + 50;
+            this.vx = (Math.random() - 0.5) * 6;
+            this.vy = (Math.random() - 0.5) * 6;
+            this.radius = Math.random() * 5 + 1;
+            this.color = `hsla(${Math.random() * 360}, 100%, 70%, ${Math.random() * 0.7 + 0.3})`;
+            this.life = Math.random() * 200 + 100;
             this.maxLife = this.life;
+            this.mass = this.radius * 0.1;
+            this.trail = [];
+            this.maxTrail = 10;
+            
+            if (settings.physics) {
+                this.ax = 0;
+                this.ay = 0;
+            }
         }
         
         update() {
+            // Store position for trail
+            this.trail.push({x: this.x, y: this.y});
+            if (this.trail.length > this.maxTrail) {
+                this.trail.shift();
+            }
+            
+            // Physics simulation if enabled
+            if (settings.physics) {
+                // Apply gravity
+                this.ay += 0.05;
+                
+                // Apply velocity
+                this.vx += this.ax;
+                this.vy += this.ay;
+                
+                // Apply damping
+                this.vx *= 0.99;
+                this.vy *= 0.99;
+                
+                // Reset acceleration
+                this.ax = 0;
+                this.ay = 0;
+            }
+            
+            // Update position
             this.x += this.vx;
             this.y += this.vy;
             this.life--;
             
-            if (this.x < 0 || this.x > width) this.vx *= -0.8;
-            if (this.y < 0 || this.y > height) this.vy *= -0.8;
+            // Boundary collision with energy loss
+            if (this.x < this.radius || this.x > width - this.radius) {
+                this.vx *= -0.8;
+                this.x = Math.max(this.radius, Math.min(width - this.radius, this.x));
+            }
+            if (this.y < this.radius || this.y > height - this.radius) {
+                this.vy *= -0.8;
+                this.y = Math.max(this.radius, Math.min(height - this.radius, this.y));
+            }
             
             // Add some randomness
-            this.vx += (Math.random() - 0.5) * 0.1;
-            this.vy += (Math.random() - 0.5) * 0.1;
+            this.vx += (Math.random() - 0.5) * 0.2;
+            this.vy += (Math.random() - 0.5) * 0.2;
             
             // Limit velocity
             const speed = Math.sqrt(this.vx*this.vx + this.vy*this.vy);
-            if (speed > 3) {
-                this.vx = (this.vx / speed) * 3;
-                this.vy = (this.vy / speed) * 3;
+            if (speed > 5) {
+                this.vx = (this.vx / speed) * 5;
+                this.vy = (this.vy / speed) * 5;
             }
             
             return this.life > 0;
         }
         
         draw() {
+            if (settings.optimizationMode === 'super-optimized') {
+                this.drawSuperOptimized();
+                return;
+            }
+            
+            // Draw trail if enabled
+            if (settings.postprocessing && this.trail.length > 1) {
+                ctx.save();
+                ctx.globalAlpha = 0.3;
+                ctx.strokeStyle = this.color;
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(this.trail[0].x, this.trail[0].y);
+                for(let i = 1; i < this.trail.length; i++) {
+                    ctx.lineTo(this.trail[i].x, this.trail[i].y);
+                }
+                ctx.stroke();
+                ctx.restore();
+            }
+            
             ctx.save();
             ctx.globalAlpha = this.life / this.maxLife;
             ctx.fillStyle = this.color;
+            
+            // Lighting effect
+            if (settings.lighting) {
+                const gradient = ctx.createRadialGradient(
+                    this.x, this.y, 0,
+                    this.x, this.y, this.radius * 2
+                );
+                gradient.addColorStop(0, this.color);
+                gradient.addColorStop(1, 'rgba(0,0,0,0)');
+                ctx.fillStyle = gradient;
+            }
+            
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
             ctx.fill();
             ctx.restore();
             settings.drawCalls++;
+        }
+        
+        drawSuperOptimized() {
+            // Ultra optimized version - minimal state changes
+            ctx.globalAlpha = this.life / this.maxLife;
+            ctx.fillStyle = this.color;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+            ctx.fill();
         }
     }
 
@@ -304,38 +680,141 @@
         constructor() {
             this.x = Math.random() * width;
             this.y = Math.random() * height;
-            this.radius = 15 + Math.random() * 35;
+            this.radius = 20 + Math.random() * 50;
             this.angle = Math.random() * Math.PI * 2;
-            this.speed = (Math.random() - 0.5) * 0.05;
-            this.vx = (Math.random() - 0.5) * 2;
-            this.vy = (Math.random() - 0.5) * 2;
-            this.rotationSpeed = (Math.random() - 0.5) * 0.02;
-            this.color = `hsl(${Math.random() * 360}, 80%, 60%)`;
-            this.shapeType = settings.shapeType === 'mixed' ? 
-                ['gear', 'star', 'spiral', 'polygon', 'curve'][Math.floor(Math.random() * 5)] : 
-                settings.shapeType;
-            this.innerRadius = this.radius * (0.3 + Math.random() * 0.3);
+            this.speed = (Math.random() - 0.5) * 0.08;
+            this.vx = (Math.random() - 0.5) * 3;
+            this.vy = (Math.random() - 0.5) * 3;
+            this.rotationSpeed = (Math.random() - 0.5) * 0.03;
+            this.color = `hsl(${Math.random() * 360}, 90%, 65%)`;
+            
+            // Determine shape type
+            if (settings.shapeType === 'mixed') {
+                const shapes = ['gear', 'star', 'spiral', 'polygon', 'curve', 'fractal', 'metaball', 'noise'];
+                this.shapeType = shapes[Math.floor(Math.random() * shapes.length)];
+            } else if (settings.shapeType === 'extreme') {
+                // Alternate between complex shapes each frame
+                this.shapeType = 'extreme';
+            } else {
+                this.shapeType = settings.shapeType;
+            }
+            
+            this.innerRadius = this.radius * (0.2 + Math.random() * 0.4);
             this.spikes = Math.floor(3 + Math.random() * (settings.teeth - 3));
+            this.complexity = this.calculateComplexity();
+            this.lastUpdate = 0;
+            this.frameCount = 0;
+            
+            // Physics properties
+            this.mass = this.radius * 0.5;
+            this.elasticity = 0.8;
+            
+            // For fractal shapes
+            this.fractalDepth = 3;
+            this.noiseOffset = Math.random() * 1000;
+            
+            // For metaballs
+            this.blobPoints = [];
+            for(let i = 0; i < 8; i++) {
+                this.blobPoints.push({
+                    angle: Math.random() * Math.PI * 2,
+                    distance: this.radius * (0.5 + Math.random() * 0.5),
+                    speed: (Math.random() - 0.5) * 0.02
+                });
+            }
+        }
+        
+        calculateComplexity() {
+            switch(settings.optimizationMode) {
+                case 'super-optimized':
+                    return Math.floor(3 + Math.random() * 5);
+                case 'optimized':
+                    return Math.floor(3 + Math.random() * (settings.teeth - 3));
+                case 'normal':
+                    return Math.floor(settings.teeth / 2);
+                case 'unoptimized':
+                    return Math.floor(settings.teeth * 1.5);
+                case 'super-unoptimized':
+                    return Math.floor(settings.teeth * 3);
+                default:
+                    return 8;
+            }
         }
 
         update() {
             const startTime = performance.now();
+            this.frameCount++;
             
+            // Movement
             this.angle += this.speed;
             this.x += this.vx; 
             this.y += this.vy;
             
-            if (this.x < -this.radius || this.x > width + this.radius) this.vx *= -1;
-            if (this.y < -this.radius || this.y > height + this.radius) this.vy *= -1;
-            
-            // Apply CPU stress tests
-            if (settings.cpuLoad > 0) {
-                heavyMath1(settings.cpuLoad);
+            // Boundary handling with bounce
+            if (this.x < this.radius || this.x > width - this.radius) {
+                this.vx *= -this.elasticity;
+                this.x = Math.max(this.radius, Math.min(width - this.radius, this.x));
+            }
+            if (this.y < this.radius || this.y > height - this.radius) {
+                this.vy *= -this.elasticity;
+                this.y = Math.max(this.radius, Math.min(height - this.radius, this.y));
             }
             
+            // Apply CPU stress tests based on optimization mode
+            let mathIterations = 0;
+            
+            switch(settings.optimizationMode) {
+                case 'super-optimized':
+                    mathIterations = Math.floor(settings.cpuLoad / 10);
+                    break;
+                case 'optimized':
+                    mathIterations = settings.cpuLoad;
+                    break;
+                case 'normal':
+                    mathIterations = settings.cpuLoad * 2;
+                    break;
+                case 'unoptimized':
+                    mathIterations = settings.cpuLoad * 5;
+                    break;
+                case 'super-unoptimized':
+                    mathIterations = settings.cpuLoad * 10;
+                    break;
+            }
+            
+            if (mathIterations > 0) {
+                heavyMath1(mathIterations);
+            }
+            
+            // Secondary CPU load
             if (settings.cpuLoad2 > 0) {
-                heavyMath2(Math.floor(settings.cpuLoad2 / 100));
-                heavyMath3(Math.floor(settings.cpuLoad2 / 200));
+                const loadMultiplier = {
+                    'super-optimized': 0.5,
+                    'optimized': 1,
+                    'normal': 2,
+                    'unoptimized': 5,
+                    'super-unoptimized': 10
+                }[settings.optimizationMode] || 1;
+                
+                heavyMath2(Math.floor(settings.cpuLoad2 / 100 * loadMultiplier));
+                heavyMath3(Math.floor(settings.cpuLoad2 / 200 * loadMultiplier));
+            }
+            
+            // Extreme CPU stress for super unoptimized mode
+            if (settings.optimizationMode === 'super-unoptimized' && settings.cpuLoad > 1000) {
+                heavyMath4(Math.floor(settings.cpuLoad / 100));
+                heavyMath5(Math.floor(settings.cpuLoad / 200));
+                
+                // Additional pointless calculations
+                for(let i = 0; i < 100; i++) {
+                    Math.sin(Math.cos(Math.tan(Math.atan2(i, this.x))));
+                }
+            }
+            
+            // Update blob points for metaballs
+            if (this.shapeType === 'metaball') {
+                for(let point of this.blobPoints) {
+                    point.angle += point.speed;
+                }
             }
             
             lastCpuTime += performance.now() - startTime;
@@ -343,58 +822,116 @@
         }
 
         draw() {
+            // Skip drawing if outside viewport in optimized modes
+            if ((settings.optimizationMode === 'optimized' || settings.optimizationMode === 'super-optimized') &&
+                (this.x < -this.radius * 2 || this.x > width + this.radius * 2 ||
+                 this.y < -this.radius * 2 || this.y > height + this.radius * 2)) {
+                return;
+            }
+            
+            if (settings.optimizationMode === 'super-optimized' && settings.useLowQuality) {
+                this.drawSuperOptimized();
+                return;
+            }
+            
             ctx.save();
             ctx.translate(this.x, this.y);
             ctx.rotate(this.angle);
             
-            if (settings.shadows) {
-                ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
-                ctx.shadowBlur = 15;
-                ctx.shadowOffsetX = 5;
-                ctx.shadowOffsetY = 5;
+            // Shadows
+            if (settings.shadows && !['super-unoptimized', 'unoptimized'].includes(settings.optimizationMode)) {
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
+                ctx.shadowBlur = settings.optimizationMode === 'super-optimized' ? 8 : 15;
+                ctx.shadowOffsetX = settings.optimizationMode === 'super-optimized' ? 3 : 5;
+                ctx.shadowOffsetY = settings.optimizationMode === 'super-optimized' ? 3 : 5;
             }
             
             ctx.fillStyle = this.color;
             ctx.beginPath();
             
-            switch(this.shapeType) {
-                case 'gear':
-                    this.drawGear();
-                    break;
-                case 'star':
-                    this.drawStar();
-                    break;
-                case 'spiral':
-                    this.drawSpiral();
-                    break;
-                case 'polygon':
-                    this.drawPolygon();
-                    break;
-                case 'curve':
-                    this.drawCurve();
-                    break;
+            // Draw the shape
+            if (this.shapeType === 'extreme') {
+                // Alternate between different complex shapes each frame
+                const shapeIndex = this.frameCount % 5;
+                switch(shapeIndex) {
+                    case 0: this.drawFractal(); break;
+                    case 1: this.drawMetaball(); break;
+                    case 2: this.drawNoiseShape(); break;
+                    case 3: this.drawSuperComplexGear(); break;
+                    case 4: this.drawQuantumShape(); break;
+                }
+            } else {
+                switch(this.shapeType) {
+                    case 'gear': this.drawGear(); break;
+                    case 'star': this.drawStar(); break;
+                    case 'spiral': this.drawSpiral(); break;
+                    case 'polygon': this.drawPolygon(); break;
+                    case 'curve': this.drawCurve(); break;
+                    case 'fractal': this.drawFractal(); break;
+                    case 'metaball': this.drawMetaball(); break;
+                    case 'noise': this.drawNoiseShape(); break;
+                }
             }
             
             ctx.closePath();
             ctx.fill();
             
-            if (settings.shadows) {
+            // Reset shadows
+            if (settings.shadows && !['super-unoptimized', 'unoptimized'].includes(settings.optimizationMode)) {
                 ctx.shadowColor = 'transparent';
             }
             
-            // Inner detail
-            ctx.globalCompositeOperation = 'destination-out';
-            ctx.beginPath();
-            ctx.arc(0, 0, this.innerRadius, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.globalCompositeOperation = 'source-over';
+            // Inner detail - skip in unoptimized modes for performance
+            if (!['super-unoptimized', 'unoptimized'].includes(settings.optimizationMode)) {
+                ctx.globalCompositeOperation = 'destination-out';
+                ctx.beginPath();
+                ctx.arc(0, 0, this.innerRadius, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.globalCompositeOperation = 'source-over';
+                
+                // Additional details for optimized modes
+                if (settings.optimizationMode === 'optimized' || settings.optimizationMode === 'super-optimized') {
+                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.arc(0, 0, this.innerRadius * 0.8, 0, Math.PI * 2);
+                    ctx.stroke();
+                }
+            }
             
             settings.drawCalls++;
             ctx.restore();
         }
         
+        drawSuperOptimized() {
+            // Ultra simplified drawing for super optimized mode
+            ctx.save();
+            ctx.translate(this.x, this.y);
+            ctx.rotate(this.angle);
+            
+            ctx.fillStyle = this.color;
+            ctx.beginPath();
+            
+            // Even simpler shape - just a hexagon
+            const sides = 6;
+            for (let i = 0; i < sides; i++) {
+                const angle = (Math.PI * 2 * i) / sides;
+                const radius = this.radius;
+                if (i === 0) {
+                    ctx.moveTo(radius * Math.cos(angle), radius * Math.sin(angle));
+                } else {
+                    ctx.lineTo(radius * Math.cos(angle), radius * Math.sin(angle));
+                }
+            }
+            
+            ctx.closePath();
+            ctx.fill();
+            settings.drawCalls++;
+            ctx.restore();
+        }
+        
         drawGear() {
-            const segments = this.spikes * 2;
+            const segments = this.complexity * 2;
             for (let i = 0; i < segments; i++) {
                 const r = (i % 2 === 0) ? this.radius : this.radius * 0.7;
                 const theta = (Math.PI * 2 * i) / segments;
@@ -407,7 +944,7 @@
         }
         
         drawStar() {
-            const spikes = this.spikes * 2;
+            const spikes = this.complexity * 2;
             for (let i = 0; i < spikes; i++) {
                 const r = (i % 2 === 0) ? this.radius : this.radius * 0.5;
                 const theta = (Math.PI * 2 * i) / spikes;
@@ -420,8 +957,10 @@
         }
         
         drawSpiral() {
-            const turns = 3;
-            const points = 100;
+            const turns = settings.optimizationMode === 'super-unoptimized' ? 8 : 
+                         (settings.optimizationMode === 'unoptimized' ? 5 : 3);
+            const points = settings.optimizationMode === 'super-unoptimized' ? 400 : 
+                          (settings.optimizationMode === 'unoptimized' ? 200 : 100);
             for (let i = 0; i <= points; i++) {
                 const t = i / points;
                 const angle = t * Math.PI * 2 * turns;
@@ -437,8 +976,9 @@
         }
         
         drawPolygon() {
-            const sides = 3 + Math.floor(this.spikes / 2);
-            const irregularity = 0.3;
+            const sides = this.complexity;
+            const irregularity = settings.optimizationMode === 'super-unoptimized' ? 0.8 : 
+                               (settings.optimizationMode === 'unoptimized' ? 0.5 : 0.3);
             for (let i = 0; i < sides; i++) {
                 const angle = (Math.PI * 2 * i) / sides;
                 const radius = this.radius * (1 - irregularity + Math.random() * irregularity * 2);
@@ -454,7 +994,9 @@
         
         drawCurve() {
             const cp = [];
-            for (let i = 0; i < 4; i++) {
+            const numPoints = settings.optimizationMode === 'super-unoptimized' ? 12 : 
+                            (settings.optimizationMode === 'unoptimized' ? 8 : 4);
+            for (let i = 0; i < numPoints; i++) {
                 cp.push({
                     x: (Math.random() - 0.5) * this.radius * 2,
                     y: (Math.random() - 0.5) * this.radius * 2
@@ -470,23 +1012,154 @@
                 );
             }
         }
+        
+        drawFractal() {
+            // Recursive fractal shape
+            const drawFractalRecursive = (x, y, radius, depth, maxDepth) => {
+                if (depth >= maxDepth) return;
+                
+                const branches = 3 + Math.floor(Math.random() * 3);
+                for (let i = 0; i < branches; i++) {
+                    const angle = (Math.PI * 2 * i) / branches + this.angle;
+                    const newRadius = radius * 0.6;
+                    const newX = x + Math.cos(angle) * radius;
+                    const newY = y + Math.sin(angle) * radius;
+                    
+                    ctx.lineTo(newX, newY);
+                    drawFractalRecursive(newX, newY, newRadius, depth + 1, maxDepth);
+                    ctx.lineTo(x, y);
+                }
+            };
+            
+            const maxDepth = settings.optimizationMode === 'super-unoptimized' ? 5 : 
+                           (settings.optimizationMode === 'unoptimized' ? 4 : 3);
+            ctx.moveTo(0, 0);
+            drawFractalRecursive(0, 0, this.radius, 0, maxDepth);
+        }
+        
+        drawMetaball() {
+            // Metaball-like shape
+            const points = 100;
+            for (let i = 0; i <= points; i++) {
+                const angle = (Math.PI * 2 * i) / points;
+                let radius = 0;
+                
+                // Sum influences from blob points
+                for (let point of this.blobPoints) {
+                    const dx = Math.cos(point.angle) * point.distance;
+                    const dy = Math.sin(point.angle) * point.distance;
+                    const distance = Math.sqrt(
+                        Math.pow(Math.cos(angle) * this.radius - dx, 2) +
+                        Math.pow(Math.sin(angle) * this.radius - dy, 2)
+                    );
+                    radius += (point.distance * 2) / (distance + 1);
+                }
+                
+                radius = Math.min(this.radius * 1.5, Math.max(this.radius * 0.5, radius));
+                const x = radius * Math.cos(angle);
+                const y = radius * Math.sin(angle);
+                
+                if (i === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            }
+        }
+        
+        drawNoiseShape() {
+            // Shape based on Perlin-like noise
+            const points = 200;
+            for (let i = 0; i <= points; i++) {
+                const angle = (Math.PI * 2 * i) / points;
+                
+                // Simple noise function
+                const noise = Math.sin(angle * 10 + this.noiseOffset) * 
+                             Math.cos(angle * 7 + this.noiseOffset) * 
+                             Math.sin(angle * 3 + this.noiseOffset);
+                
+                const radius = this.radius * (1 + noise * 0.3);
+                const x = radius * Math.cos(angle);
+                const y = radius * Math.sin(angle);
+                
+                if (i === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            }
+        }
+        
+        drawSuperComplexGear() {
+            // Extremely complex gear for stress testing
+            const segments = this.complexity * 4;
+            for (let i = 0; i < segments; i++) {
+                // Multiple layers of teeth
+                const layer = i % 3;
+                let r;
+                switch(layer) {
+                    case 0: r = this.radius; break;
+                    case 1: r = this.radius * 0.8; break;
+                    case 2: r = this.radius * 0.6; break;
+                }
+                
+                // Add random irregularities
+                r *= (0.9 + Math.random() * 0.2);
+                
+                const theta = (Math.PI * 2 * i) / segments;
+                if (i === 0) {
+                    ctx.moveTo(r * Math.cos(theta), r * Math.sin(theta));
+                } else {
+                    ctx.lineTo(r * Math.cos(theta), r * Math.sin(theta));
+                }
+            }
+        }
+        
+        drawQuantumShape() {
+            // "Quantum" shape that changes randomly
+            const points = 150;
+            for (let i = 0; i <= points; i++) {
+                const angle = (Math.PI * 2 * i) / points;
+                
+                // Random fluctuations
+                const quantumFluctuation = Math.sin(angle * 13 + this.frameCount * 0.1) *
+                                          Math.cos(angle * 17 + this.frameCount * 0.07) *
+                                          Math.random();
+                
+                // Superposition-like effect
+                const superposition = Math.sin(angle * 7 + quantumFluctuation) * 0.5 + 0.5;
+                
+                const radius = this.radius * (0.7 + superposition * 0.6);
+                const x = radius * Math.cos(angle + quantumFluctuation * 0.1);
+                const y = radius * Math.sin(angle + quantumFluctuation * 0.1);
+                
+                if (i === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            }
+        }
     }
 
     function initShapes() {
         gears = [];
-        for(let i = 0; i < settings.count; i++) {
+        const count = Math.min(settings.count, settings.maxGears);
+        for(let i = 0; i < count; i++) {
             gears.push(new ComplexShape());
         }
     }
 
     function updateParticles() {
+        const maxParticles = Math.min(settings.particleCount, settings.maxParticles);
+        
         // Add new particles if needed
-        while (particles.length < settings.particleCount && particles.length < 10000) {
+        while (particles.length < maxParticles && particles.length < 50000) {
             particles.push(new Particle());
         }
         
         // Remove excess particles
-        while (particles.length > settings.particleCount) {
+        while (particles.length > maxParticles) {
             particles.pop();
         }
         
@@ -501,30 +1174,190 @@
     function syncCanvas() {
         width = window.innerWidth;
         height = window.innerHeight;
-        canvas.width = width * settings.res;
-        canvas.height = height * settings.res;
+        canvas.width = width * Math.min(settings.res, settings.maxRes);
+        canvas.height = height * Math.min(settings.res, settings.maxRes);
         canvas.style.width = width + "px";
         canvas.style.height = height + "px";
         
         // Reset transform and set new scale
         ctx.setTransform(1, 0, 0, 1, 0, 0);
-        ctx.scale(settings.res, settings.res);
+        ctx.scale(Math.min(settings.res, settings.maxRes), Math.min(settings.res, settings.maxRes));
+        
+        // Initialize post-processing buffer if needed
+        if (settings.postprocessing && !postProcessingBuffer) {
+            postProcessingBuffer = document.createElement('canvas');
+            postProcessingCtx = postProcessingBuffer.getContext('2d');
+            postProcessingBuffer.width = canvas.width;
+            postProcessingBuffer.height = canvas.height;
+        }
+    }
+
+    function updateOptimizationSettings() {
+        switch(settings.optimizationMode) {
+            case 'super-optimized':
+                settings.useOffscreenCanvas = true;
+                settings.batchDrawCalls = true;
+                settings.useLowQuality = true;
+                settings.useWebWorkers = true;
+                settings.useGPUAcceleration = true;
+                settings.maxGears = 100000;
+                settings.maxParticles = 100000;
+                settings.maxTeeth = 1000;
+                settings.maxRes = 32.0;
+                break;
+            case 'optimized':
+                settings.useOffscreenCanvas = true;
+                settings.batchDrawCalls = true;
+                settings.useLowQuality = false;
+                settings.useWebWorkers = false;
+                settings.useGPUAcceleration = true;
+                settings.maxGears = 50000;
+                settings.maxParticles = 50000;
+                settings.maxTeeth = 500;
+                settings.maxRes = 16.0;
+                break;
+            case 'normal':
+                settings.useOffscreenCanvas = false;
+                settings.batchDrawCalls = false;
+                settings.useLowQuality = false;
+                settings.useWebWorkers = false;
+                settings.useGPUAcceleration = false;
+                settings.maxGears = 20000;
+                settings.maxParticles = 20000;
+                settings.maxTeeth = 200;
+                settings.maxRes = 8.0;
+                break;
+            case 'unoptimized':
+                settings.useOffscreenCanvas = false;
+                settings.batchDrawCalls = false;
+                settings.useLowQuality = false;
+                settings.useWebWorkers = false;
+                settings.useGPUAcceleration = false;
+                settings.maxGears = 10000;
+                settings.maxParticles = 10000;
+                settings.maxTeeth = 100;
+                settings.maxRes = 4.0;
+                break;
+            case 'super-unoptimized':
+                settings.useOffscreenCanvas = false;
+                settings.batchDrawCalls = false;
+                settings.useLowQuality = false;
+                settings.useWebWorkers = false;
+                settings.useGPUAcceleration = false;
+                settings.maxGears = 5000;
+                settings.maxParticles = 5000;
+                settings.maxTeeth = 50;
+                settings.maxRes = 2.0;
+                break;
+        }
+        
+        // Update UI limits
+        document.getElementById('input-count').max = settings.maxGears;
+        document.getElementById('input-teeth').max = settings.maxTeeth;
+        document.getElementById('input-particles').max = settings.maxParticles;
+        document.getElementById('input-res').max = settings.maxRes;
+        document.getElementById('input-cpu').max = settings.maxGears;
+        document.getElementById('input-cpu2').max = settings.maxGears * 2;
+        
+        // Update labels
+        document.querySelectorAll('.limits-info').forEach(el => {
+            const parent = el.parentElement;
+            if (parent.querySelector('#input-count')) {
+                el.textContent = `Limite: 1 - ${settings.maxGears.toLocaleString()}`;
+            } else if (parent.querySelector('#input-teeth')) {
+                el.textContent = `Limite: 3 - ${settings.maxTeeth}`;
+            } else if (parent.querySelector('#input-particles')) {
+                el.textContent = `Limite: 0 - ${settings.maxParticles.toLocaleString()}`;
+            } else if (parent.querySelector('#input-res')) {
+                el.textContent = `Limite: 0.1x - ${settings.maxRes.toFixed(1)}x`;
+            } else if (parent.querySelector('#input-cpu')) {
+                el.textContent = `Limite: 0 - ${settings.maxGears.toLocaleString()}`;
+            } else if (parent.querySelector('#input-cpu2')) {
+                el.textContent = `Limite: 0 - ${(settings.maxGears * 2).toLocaleString()}`;
+            }
+        });
+        
+        // Apply current values within new limits
+        settings.count = Math.min(settings.count, settings.maxGears);
+        settings.particleCount = Math.min(settings.particleCount, settings.maxParticles);
+        settings.teeth = Math.min(settings.teeth, settings.maxTeeth);
+        settings.res = Math.min(settings.res, settings.maxRes);
+        settings.cpuLoad = Math.min(settings.cpuLoad, settings.maxGears);
+        settings.cpuLoad2 = Math.min(settings.cpuLoad2, settings.maxGears * 2);
+        
+        // Update UI
+        document.getElementById('input-count').value = settings.count;
+        document.getElementById('v-count').innerText = settings.count;
+        document.getElementById('input-particles').value = settings.particleCount;
+        document.getElementById('v-particles').innerText = settings.particleCount;
+        document.getElementById('input-teeth').value = settings.teeth;
+        document.getElementById('v-teeth').innerText = settings.teeth;
+        document.getElementById('input-res').value = settings.res;
+        document.getElementById('v-res').innerText = settings.res.toFixed(1);
+        document.getElementById('input-cpu').value = settings.cpuLoad;
+        document.getElementById('v-cpu').innerText = settings.cpuLoad;
+        document.getElementById('input-cpu2').value = settings.cpuLoad2;
+        document.getElementById('v-cpu2').innerText = settings.cpuLoad2;
+        
+        initShapes();
+        syncCanvas();
+    }
+
+    function applyPostProcessing() {
+        if (!settings.postprocessing || !postProcessingBuffer) return;
+        
+        // Copy canvas to buffer
+        postProcessingCtx.drawImage(canvas, 0, 0);
+        
+        // Apply effects
+        const imageData = postProcessingCtx.getImageData(0, 0, postProcessingBuffer.width, postProcessingBuffer.height);
+        const data = imageData.data;
+        
+        // Simple bloom effect
+        for (let i = 0; i < data.length; i += 4) {
+            // Brighten bright pixels
+            const brightness = (data[i] + data[i + 1] + data[i + 2]) / 3;
+            if (brightness > 150) {
+                data[i] = Math.min(255, data[i] * 1.2);
+                data[i + 1] = Math.min(255, data[i + 1] * 1.2);
+                data[i + 2] = Math.min(255, data[i + 2] * 1.2);
+            }
+            
+            // Add slight vignette
+            const x = (i / 4) % postProcessingBuffer.width;
+            const y = Math.floor((i / 4) / postProcessingBuffer.width);
+            const centerX = postProcessingBuffer.width / 2;
+            const centerY = postProcessingBuffer.height / 2;
+            const distance = Math.sqrt(Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2));
+            const maxDistance = Math.sqrt(Math.pow(centerX, 2) + Math.pow(centerY, 2));
+            const vignette = 1 - (distance / maxDistance) * 0.3;
+            
+            data[i] *= vignette;
+            data[i + 1] *= vignette;
+            data[i + 2] *= vignette;
+        }
+        
+        postProcessingCtx.putImageData(imageData, 0, 0);
+        
+        // Draw back to main canvas
+        ctx.clearRect(0, 0, width, height);
+        ctx.drawImage(postProcessingBuffer, 0, 0);
     }
 
     // Event listeners for controls
     document.getElementById('input-count').oninput = function() {
-        settings.count = parseInt(this.value);
+        settings.count = Math.min(parseInt(this.value), settings.maxGears);
         document.getElementById('v-count').innerText = settings.count;
         initShapes();
     };
     
     document.getElementById('input-teeth').oninput = function() {
-        settings.teeth = parseInt(this.value);
+        settings.teeth = Math.min(parseInt(this.value), settings.maxTeeth);
         document.getElementById('v-teeth').innerText = this.value;
     };
     
     document.getElementById('input-res').oninput = function() {
-        settings.res = parseFloat(this.value);
+        settings.res = Math.min(parseFloat(this.value), settings.maxRes);
         document.getElementById('v-res').innerText = settings.res.toFixed(1);
         syncCanvas();
     };
@@ -540,7 +1373,7 @@
     };
     
     document.getElementById('input-particles').oninput = function() {
-        settings.particleCount = parseInt(this.value);
+        settings.particleCount = Math.min(parseInt(this.value), settings.maxParticles);
         document.getElementById('v-particles').innerText = this.value;
     };
     
@@ -550,10 +1383,76 @@
         initShapes();
     };
 
+    // Checkbox event listeners for optimization modes
+    const optimizationCheckboxes = [
+        'super-optimized',
+        'optimized',
+        'normal',
+        'unoptimized',
+        'super-unoptimized'
+    ];
+    
+    optimizationCheckboxes.forEach(id => {
+        document.getElementById(`${id}-checkbox`).onclick = function() {
+            if (this.checked) {
+                // Uncheck all other checkboxes
+                optimizationCheckboxes.forEach(otherId => {
+                    if (otherId !== id) {
+                        document.getElementById(`${otherId}-checkbox`).checked = false;
+                        document.getElementById(`${otherId}-label`).classList.remove(
+                            'optimization-active',
+                            'optimization-super-optimized',
+                            'optimization-super-unoptimized'
+                        );
+                    }
+                });
+                
+                // Set the optimization mode
+                settings.optimizationMode = id;
+                updateOptimizationSettings();
+                
+                // Update label styling
+                const label = document.getElementById(`${id}-label`);
+                label.classList.add('optimization-active');
+                
+                if (id === 'super-optimized') {
+                    label.classList.add('optimization-super-optimized');
+                } else if (id === 'super-unoptimized') {
+                    label.classList.add('optimization-super-unoptimized');
+                }
+            } else {
+                this.checked = true; // Keep at least one checked
+            }
+        };
+    });
+
+    // Toggle event listeners
+    document.getElementById('physics-toggle').onchange = function() {
+        settings.physics = this.checked;
+        document.getElementById('physics-btn').innerText = 'Física: ' + (settings.physics ? 'ON' : 'OFF');
+    };
+    
+    document.getElementById('collisions-toggle').onchange = function() {
+        settings.collisions = this.checked;
+    };
+    
+    document.getElementById('lighting-toggle').onchange = function() {
+        settings.lighting = this.checked;
+    };
+    
+    document.getElementById('postprocessing-toggle').onchange = function() {
+        settings.postprocessing = this.checked;
+        if (settings.postprocessing && !postProcessingBuffer) {
+            postProcessingBuffer = document.createElement('canvas');
+            postProcessingCtx = postProcessingBuffer.getContext('2d');
+            syncCanvas();
+        }
+    };
+
     function changeGears(amt) {
         let val = parseInt(document.getElementById('input-count').value) + amt;
         if (val < 1) val = 1;
-        if (val > 10000) val = 10000;
+        if (val > settings.maxGears) val = settings.maxGears;
         document.getElementById('input-count').value = val;
         document.getElementById('input-count').oninput();
     }
@@ -568,21 +1467,90 @@
         document.getElementById('blur-btn').innerText = 'Blur: ' + (settings.blur ? 'ON' : 'OFF');
     }
     
+    function togglePhysics() {
+        settings.physics = !settings.physics;
+        document.getElementById('physics-btn').innerText = 'Física: ' + (settings.physics ? 'ON' : 'OFF');
+        document.getElementById('physics-toggle').checked = settings.physics;
+    }
+    
     function stressTest() {
-        document.getElementById('input-count').value = 10000;
+        // Regular stress test
+        document.getElementById('input-count').value = Math.min(10000, settings.maxGears);
         document.getElementById('input-count').oninput();
         
-        document.getElementById('input-teeth').value = 100;
+        document.getElementById('input-teeth').value = Math.min(100, settings.maxTeeth);
         document.getElementById('input-teeth').oninput();
         
-        document.getElementById('input-cpu').value = 5000;
+        document.getElementById('input-cpu').value = Math.min(10000, settings.maxGears);
         document.getElementById('input-cpu').oninput();
         
-        document.getElementById('input-cpu2').value = 10000;
+        document.getElementById('input-cpu2').value = Math.min(20000, settings.maxGears * 2);
         document.getElementById('input-cpu2').oninput();
         
-        document.getElementById('input-particles').value = 5000;
+        document.getElementById('input-particles').value = Math.min(10000, settings.maxParticles);
         document.getElementById('input-particles').oninput();
+        
+        document.getElementById('input-res').value = Math.min(2.0, settings.maxRes);
+        document.getElementById('input-res').oninput();
+        
+        // Enable extra features
+        document.getElementById('physics-toggle').checked = true;
+        settings.physics = true;
+        document.getElementById('physics-btn').innerText = 'Física: ON';
+        
+        document.getElementById('lighting-toggle').checked = true;
+        settings.lighting = true;
+        
+        document.getElementById('postprocessing-toggle').checked = true;
+        settings.postprocessing = true;
+    }
+    
+    function extremeTest() {
+        // Extreme test - push to absolute limits
+        if (confirm('ATENÇÃO: Este teste pode travar seu navegador! Continuar?')) {
+            document.getElementById('input-count').value = settings.maxGears;
+            document.getElementById('input-count').oninput();
+            
+            document.getElementById('input-teeth').value = settings.maxTeeth;
+            document.getElementById('input-teeth').oninput();
+            
+            document.getElementById('input-cpu').value = settings.maxGears;
+            document.getElementById('input-cpu').oninput();
+            
+            document.getElementById('input-cpu2').value = settings.maxGears * 2;
+            document.getElementById('input-cpu2').oninput();
+            
+            document.getElementById('input-particles').value = settings.maxParticles;
+            document.getElementById('input-particles').oninput();
+            
+            document.getElementById('input-res').value = settings.maxRes;
+            document.getElementById('input-res').oninput();
+            
+            document.getElementById('input-shape').value = 'extreme';
+            document.getElementById('input-shape').onchange();
+            
+            // Enable ALL features
+            document.getElementById('physics-toggle').checked = true;
+            settings.physics = true;
+            document.getElementById('physics-btn').innerText = 'Física: ON';
+            
+            document.getElementById('collisions-toggle').checked = true;
+            settings.collisions = true;
+            
+            document.getElementById('lighting-toggle').checked = true;
+            settings.lighting = true;
+            
+            document.getElementById('postprocessing-toggle').checked = true;
+            settings.postprocessing = true;
+            
+            settings.shadows = true;
+            settings.blur = true;
+            document.getElementById('shadow-btn').innerText = 'Sombra: ON';
+            document.getElementById('blur-btn').innerText = 'Blur: ON';
+            
+            // Switch to super unoptimized mode for maximum stress
+            document.getElementById('super-unoptimized-checkbox').click();
+        }
     }
     
     function resetTest() {
@@ -609,20 +1577,65 @@
         
         settings.shadows = true;
         settings.blur = false;
+        settings.physics = false;
+        settings.collisions = false;
+        settings.lighting = false;
+        settings.postprocessing = false;
+        
         document.getElementById('shadow-btn').innerText = 'Sombra: ON';
         document.getElementById('blur-btn').innerText = 'Blur: OFF';
+        document.getElementById('physics-btn').innerText = 'Física: OFF';
+        
+        document.getElementById('physics-toggle').checked = false;
+        document.getElementById('collisions-toggle').checked = false;
+        document.getElementById('lighting-toggle').checked = false;
+        document.getElementById('postprocessing-toggle').checked = false;
+        
+        // Reset to optimized mode
+        document.getElementById('optimized-checkbox').checked = true;
+        document.getElementById('normal-checkbox').checked = false;
+        document.getElementById('unoptimized-checkbox').checked = false;
+        document.getElementById('super-optimized-checkbox').checked = false;
+        document.getElementById('super-unoptimized-checkbox').checked = false;
+        
+        settings.optimizationMode = 'optimized';
+        updateOptimizationSettings();
     }
 
     function render(time) {
         frameCount++;
+        
+        // Calculate frame time for GPU estimation
+        if (lastTime > 0) {
+            const frameTime = time - lastTime;
+            frameTimes.push(frameTime);
+            if (frameTimes.length > 60) frameTimes.shift();
+            
+            // Estimate GPU time (total frame time minus measured CPU time)
+            const avgFrameTime = frameTimes.reduce((a, b) => a + b, 0) / frameTimes.length;
+            gpuTime = Math.max(0, avgFrameTime - (totalCpuTime / cpuMeasurements || 0));
+        }
+        lastTime = time;
+        
+        // Update FPS every second
         if (time - lastFpsUpdate > 1000) {
             fps = Math.round(frameCount * 1000 / (time - lastFpsUpdate));
             frameCount = 0;
             lastFpsUpdate = time;
             
+            // Update FPS display with color coding
             document.getElementById('fps').innerText = fps + " FPS";
-            document.getElementById('fps').style.color = fps < 15 ? '#ff4444' : 
-                (fps < 30 ? '#ffaa00' : (fps < 45 ? '#ffff00' : '#00ffcc'));
+            if (fps < 10) {
+                document.getElementById('fps').style.color = '#ff0000';
+            } else if (fps < 20) {
+                document.getElementById('fps').style.color = '#ff4444';
+            } else if (fps < 30) {
+                document.getElementById('fps').style.color = '#ffaa00';
+            } else if (fps < 45) {
+                document.getElementById('fps').style.color = '#ffff00';
+            } else {
+                document.getElementById('fps').style.color = '#00ffcc';
+            }
             
             // Update performance info
             document.getElementById('res-info').innerText = 
@@ -630,7 +1643,12 @@
                 
             const avgCpuTime = cpuMeasurements > 0 ? totalCpuTime / cpuMeasurements : 0;
             document.getElementById('cpu-time').innerText = `Tempo CPU/quadro: ${avgCpuTime.toFixed(2)}ms`;
+            document.getElementById('gpu-time').innerText = `Tempo GPU estimado: ${gpuTime.toFixed(2)}ms`;
             document.getElementById('draw-calls').innerText = `Desenhos/quadro: ${settings.drawCalls}`;
+            
+            // Estimate memory usage
+            memoryUsage = (gears.length * 100 + particles.length * 50) / 1024;
+            document.getElementById('memory-usage').innerText = `Memória estimada: ${memoryUsage.toFixed(1)} MB`;
             
             // Reset measurements
             totalCpuTime = 0;
@@ -640,7 +1658,7 @@
 
         // Clear canvas with optional blur effect
         if (settings.blur) {
-            ctx.fillStyle = 'rgba(10, 10, 10, 0.1)';
+            ctx.fillStyle = 'rgba(10, 10, 10, 0.2)';
             ctx.fillRect(0, 0, width, height);
         } else {
             ctx.fillStyle = '#0a0a0a';
@@ -662,6 +1680,11 @@
             particles[i].draw();
         }
         
+        // Apply post-processing if enabled
+        if (settings.postprocessing) {
+            applyPostProcessing();
+        }
+        
         // Accumulate CPU time
         totalCpuTime += lastCpuTime;
 
@@ -669,8 +1692,10 @@
     }
 
     window.onresize = syncCanvas;
+    
+    // Initialize
     syncCanvas();
-    initShapes();
+    updateOptimizationSettings();
     requestAnimationFrame(render);
 
 </script>
